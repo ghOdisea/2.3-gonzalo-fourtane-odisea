@@ -1,9 +1,6 @@
 import memoize from "../memoize"
 
 describe('memoize', () => {
-    it('should be a defined as a function', () => {
-        expect(memoize).toBeDefined
-    })
     it('should return true if even', () => {
         expect(memoize(2).result).toBeTruthy()
     })
