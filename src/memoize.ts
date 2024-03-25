@@ -1,4 +1,5 @@
 const prevValues : Array<number> = []
+
 export default function memoize(par_impar : number){
 
     let resultado: boolean = false  //True: Par, False: Impar
