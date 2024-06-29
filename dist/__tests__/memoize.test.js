@@ -1,22 +1,29 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const memoize_1 = __importDefault(require("../memoize"));
+const memoize_1 = require("../memoize");
 describe('memoize', () => {
-    it('should return true if even', () => {
-        expect((0, memoize_1.default)(2).result).toBeTruthy();
+    const slowMockFunction = jest.fn((num) => {
+        for (let i = 0; i <= num; i++) {
+            if (i === num) {
+                return i;
+            }
+        }
     });
-    it('should return false if not even', () => {
-        expect((0, memoize_1.default)(3).result).toBeFalsy();
+    const fastMockFunction = (0, memoize_1.memoize)(slowMockFunction);
+    it('should be defined ', () => {
+        expect(memoize_1.memoize).toBeDefined();
     });
-    it('should return true if number is repeated', () => {
-        (0, memoize_1.default)(3);
-        (0, memoize_1.default)(3);
-        expect((0, memoize_1.default)(3).repeated).toBeTruthy();
+    it('should be defined', () => {
+        expect(slowMockFunction).toBeDefined();
     });
-    it('should return false if number is Not repeated', () => {
-        expect((0, memoize_1.default)(7).repeated).toBeFalsy();
+    it('should return', () => {
+        slowMockFunction(2000);
+        expect(slowMockFunction).toHaveReturned();
+    });
+    it('should be type function', () => {
+        expect(typeof fastMockFunction).toBe('function');
+    });
+    it('should have return first', () => {
+        expect(fastMockFunction(2000)).toBe(2000);
     });
 });

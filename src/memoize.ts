@@ -1,29 +1,35 @@
-const prevValues : Array<number> = []
+export const memoize = (fn: Function): Function => {
+    const cache: Array<any> = []
 
-export default function memoize(par_impar : number){
-
-    let resultado: boolean = false  //True: Par, False: Impar
-    let repetido: boolean = false   // 
-
-    if(prevValues.includes(par_impar)){
-        repetido = true
-        return {
-            result: resultado,
-            repeated: repetido
+    return function(...args:any){
+        if (cache[args]){
+            return cache[args]
+        }
+        const result = fn(...args)
+        cache[args] = result
+        return result
+    }
+}
+export const slowFunction = (num: number) => {
+    for(let i = 0; i <= num; i++){
+        if(i === num ){
+            return i
         }
     }
-
-    if(par_impar % 2 === 0){
-        resultado = true
-        prevValues.push(par_impar)
-    } else {
-        resultado = false
-        prevValues.push(par_impar)
-    }
-    
-    return {
-        result: resultado,
-        repeated: repetido
-    }
-
 }
+
+export const fastFunction = memoize(slowFunction)
+
+// console.time()
+// console.log(slowFunction(500000))
+// console.timeEnd()
+
+// console.time()
+// console.log(fastFunction(500000))
+// console.timeEnd()
+
+// console.time()
+// console.log(fastFunction(500000))
+// console.timeEnd()
+
+

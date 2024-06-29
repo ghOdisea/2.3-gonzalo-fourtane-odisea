@@ -1,19 +1,30 @@
-import memoize from "../memoize"
+import { memoize} from "../memoize"
 
 describe('memoize', () => {
-    it('should return true if even', () => {
-        expect(memoize(2).result).toBeTruthy()
-    })
-    it('should return false if not even', () => {
-        expect(memoize(3).result).toBeFalsy()
-    })
-    it('should return true if number is repeated', () => {
-        memoize(3)
-        memoize(3)
-        expect(memoize(3).repeated).toBeTruthy()
-    })
-    it('should return false if number is Not repeated', () => {
-        expect(memoize(7).repeated).toBeFalsy()
-    })
 
+    const slowMockFunction = jest.fn((num: number)=>{
+        for(let i = 0; i <= num; i++){
+            if(i === num ){
+                return i
+            }
+        }
+    })
+    const fastMockFunction = memoize(slowMockFunction)
+
+    it('should be defined ', () => {
+        expect(memoize).toBeDefined()
+    })
+    it('should be defined', () => {
+        expect(slowMockFunction).toBeDefined()
+    })
+    it('should return', () => {
+        slowMockFunction(2000)
+        expect(slowMockFunction).toHaveReturned()
+    })
+    it('should be type function',() => {
+        expect(typeof fastMockFunction).toBe('function')
+    })
+    it('should return correct value', () => {
+        expect(fastMockFunction(2000)).toBe(2000)
+    })
 })

@@ -1,24 +1,24 @@
-const prevValues = [];
-export default function memoize(par_impar) {
-    let resultado = false; //True: Par, False: Impar
-    let repetido = false; // 
-    if (prevValues.includes(par_impar)) {
-        repetido = true;
-        return {
-            result: resultado,
-            repeated: repetido
-        };
-    }
-    if (par_impar % 2 === 0) {
-        resultado = true;
-        prevValues.push(par_impar);
-    }
-    else {
-        resultado = false;
-        prevValues.push(par_impar);
-    }
-    return {
-        result: resultado,
-        repeated: repetido
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.fastFunction = exports.slowFunction = exports.memoize = void 0;
+const memoize = (fn) => {
+    const cache = [];
+    return function (...args) {
+        if (cache[args]) {
+            return cache[args];
+        }
+        const result = fn(...args);
+        cache[args] = result;
+        return result;
     };
-}
+};
+exports.memoize = memoize;
+const slowFunction = (num) => {
+    for (let i = 0; i <= num; i++) {
+        if (i === num) {
+            return i;
+        }
+    }
+};
+exports.slowFunction = slowFunction;
+exports.fastFunction = (0, exports.memoize)(exports.slowFunction);
